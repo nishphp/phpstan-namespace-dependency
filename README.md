@@ -77,7 +77,7 @@ includes:
 services:
   -
     factory: Nish\PHPStan\NsDepends\DependencyChecker([
-      'App\Domain': ['App\DomainService', 'App\ApplicationService'],
+      'App\Domain': ['App\DomainService', 'App\ApplicationService', 'App\Infrastructure'],
       'App\DomainService': ['App\ApplicationService'],
       'App\ApplicationService': ['App\Presentation', 'App\Infrastructure', 'App\Tests'],
     ], [
