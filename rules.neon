@@ -6,3 +6,4 @@ rules:
   - Nish\PHPStan\NsDepends\Rules\ClassConstFetchRule
   - Nish\PHPStan\NsDepends\Rules\StaticPropertyFetchRule
   - Nish\PHPStan\NsDepends\Rules\ClassDefinitionRule
+  - Nish\PHPStan\NsDepends\Rules\AssignRule
