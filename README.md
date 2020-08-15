@@ -77,9 +77,9 @@ includes:
 services:
   -
     factory: Nish\PHPStan\NsDepends\DependencyChecker([
-      'App\Domain': ['App\DomainService', 'App\ApplicationService', 'App\Infrastructure'],
       'App\DomainService': ['App\ApplicationService'],
-      'App\ApplicationService': ['App\Presentation', 'App\Infrastructure', 'App\Tests'],
+      'App\Domain': ['App\DomainService', 'App\ApplicationService', 'App\Infrastructure'],
+      'App\ApplicationService': ['App\Presentation', 'App\Tests'],
     ], [
       'App\Domain\DomainException': ['Exception'],
       'App\Domain': ['DateTimeInterface', 'DateTimeImmutable'],
