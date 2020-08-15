@@ -29,7 +29,7 @@ class StaticCallRuleTest extends RuleTestCase
     {
         $this->analyse([__DIR__ . '/data/data.php'], [
             [
-                'Cannot allow depends Model to Presenter\Form::build().',
+                'Cannot allow depends Model\IndexModel to Presenter\Form::build().',
                 37
             ],
         ]);

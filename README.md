@@ -22,10 +22,10 @@ includes:
 
 services:
   -
-  	factory: Nish\PHPStan\NsDepends\DependencyChecker([
-      'callee class name prefix': ['caller namespace prefix'],
+    factory: Nish\PHPStan\NsDepends\DependencyChecker([
+      'callee class name prefix': ['caller class name prefix'],
     ], [
-      'caller namespace prefix': ['callee class name prefix'],
+      'caller class name prefix': ['callee class name prefix'],
     ])
 ```
 

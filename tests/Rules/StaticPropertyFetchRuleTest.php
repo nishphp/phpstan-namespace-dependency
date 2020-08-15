@@ -29,7 +29,7 @@ class StaticPropertyFetchRuleTest extends RuleTestCase
     {
         $this->analyse([__DIR__ . '/data/data.php'], [
             [
-                'Cannot allow depends Model to Presenter\Form::$a.',
+                'Cannot allow depends Model\IndexModel to Presenter\Form::$a.',
                 42
             ],
         ]);

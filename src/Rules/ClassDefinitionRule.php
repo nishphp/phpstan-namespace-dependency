@@ -37,11 +37,6 @@ class ClassDefinitionRule implements Rule
 			return [];
 		}
 
-		$namespace = $scope->getNamespace();
-		if ($namespace === null) {
-			return [];
-		}
-
 		if (!isset($node->namespacedName)) {
 			return [];
 		}
@@ -54,7 +49,7 @@ class ClassDefinitionRule implements Rule
 			foreach ($node->implements as $implements) {
 				$implementedClassName = (string) $implements;
 
-				if ($this->checker->accept($namespace, $implementedClassName)) {
+				if ($this->checker->accept($className, $implementedClassName)) {
 					continue;
 				}
 
@@ -69,7 +64,7 @@ class ClassDefinitionRule implements Rule
 		if ($node->extends !== null) {
 			$extendedClassName = (string) $node->extends;
 
-			if (!$this->checker->accept($namespace, $extendedClassName)) {
+			if (!$this->checker->accept($className, $extendedClassName)) {
 				$errors[] = RuleErrorBuilder::message(sprintf(
 					'Cannot allow depends %s extends %s.',
 					$className,

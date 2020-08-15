@@ -41,10 +41,11 @@ class StaticCallRule implements Rule
 			return [];
 		}
 
-		$namespace = $scope->getNamespace();
-		if ($namespace === null) {
-			return [];
-		}
+        $sourceClassReflection = $scope->getClassReflection();
+        if (!$sourceClassReflection) {
+            return [];
+        }
+        $sourceClassName = $sourceClassReflection->getName();
 
 		$errors = [];
 
@@ -63,11 +64,11 @@ class StaticCallRule implements Rule
 			return [];
 		}
 
-		if (!$this->checker->accept($namespace, $className)) {
+		if (!$this->checker->accept($sourceClassName, $className)) {
 			$methodName = $node->name->name;
 			$errors[] = RuleErrorBuilder::message(sprintf(
 				'Cannot allow depends %s to %s::%s().',
-				$namespace,
+				$sourceClassName,
 				$className,
 				$methodName
 			))->line($node->getLine())->build();

@@ -29,7 +29,7 @@ class ClassConstFetchRuleTest extends RuleTestCase
     {
         $this->analyse([__DIR__ . '/data/data.php'], [
             [
-                'Cannot allow depends Model to Presenter\Form::B.',
+                'Cannot allow depends Model\IndexModel to Presenter\Form::B.',
                 47
             ],
         ]);

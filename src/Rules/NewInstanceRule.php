@@ -41,10 +41,11 @@ class NewInstanceRule implements Rule
 			return [];
 		}
 
-		$namespace = $scope->getNamespace();
-		if ($namespace === null) {
-			return [];
-		}
+        $sourceClassReflection = $scope->getClassReflection();
+        if (!$sourceClassReflection) {
+            return [];
+        }
+        $sourceClassName = $sourceClassReflection->getName();
 
 		$errors = [];
 
@@ -59,10 +60,10 @@ class NewInstanceRule implements Rule
 			return [];
 		}
 
-		if (!$this->checker->accept($namespace, $className)) {
+		if (!$this->checker->accept($sourceClassName, $className)) {
 			$errors[] = RuleErrorBuilder::message(sprintf(
 				'Cannot allow depends %s to %s::__construct().',
-				$namespace,
+				$sourceClassName,
 				$className
 			))->line($node->getLine())->build();
 		}

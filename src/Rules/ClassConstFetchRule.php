@@ -41,10 +41,11 @@ class ClassConstFetchRule implements Rule
 			return [];
 		}
 
-		$namespace = $scope->getNamespace();
-		if ($namespace === null) {
-			return [];
-		}
+        $sourceClassReflection = $scope->getClassReflection();
+        if (!$sourceClassReflection) {
+            return [];
+        }
+        $sourceClassName = $sourceClassReflection->getName();
 
 		$errors = [];
 
@@ -57,10 +58,10 @@ class ClassConstFetchRule implements Rule
 		}
 
 		$className = (string) $node->class;
-		if (!$this->checker->accept($namespace, $className)) {
+		if (!$this->checker->accept($sourceClassName, $className)) {
 			$errors[] = RuleErrorBuilder::message(sprintf(
 				'Cannot allow depends %s to %s::%s.',
-				$namespace,
+				$sourceClassName,
 				$className,
 				$node->name->name
 			))->line($node->getLine())->build();

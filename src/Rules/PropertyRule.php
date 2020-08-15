@@ -41,10 +41,11 @@ class PropertyRule implements Rule
 			return [];
 		}
 
-		$namespace = $scope->getNamespace();
-		if ($namespace === null) {
-			return [];
-		}
+        $sourceClassReflection = $scope->getClassReflection();
+        if (!$sourceClassReflection) {
+            return [];
+        }
+        $sourceClassName = $sourceClassReflection->getName();
 
 		$errors = [];
 
@@ -61,7 +62,7 @@ class PropertyRule implements Rule
 		);
 
 		foreach ($referencedClasses as $referencedClass) {
-			if ($this->checker->accept($namespace, $referencedClass)) {
+			if ($this->checker->accept($sourceClassName, $referencedClass)) {
 				continue;
 			}
 

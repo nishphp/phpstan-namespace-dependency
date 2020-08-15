@@ -29,19 +29,19 @@ class NewInstanceRuleTest extends RuleTestCase
     {
         $this->analyse([__DIR__ . '/data/data.php'], [
             [
-                'Cannot allow depends Model to stdClass::__construct().',
+                'Cannot allow depends Model\IndexModel to stdClass::__construct().',
                 22
             ],
             [
-                'Cannot allow depends Model to Presenter\Form::__construct().',
+                'Cannot allow depends Model\IndexModel to Presenter\Form::__construct().',
                 32
             ],
             [
-                'Cannot allow depends Util to Model\IndexModel::__construct().',
+                'Cannot allow depends Util\ModelUtil to Model\IndexModel::__construct().',
                 78
             ],
             [
-                'Cannot allow depends Util to View\IndexView::__construct().',
+                'Cannot allow depends Util\Container to View\IndexView::__construct().',
                 92
             ],
         ]);
