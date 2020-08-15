@@ -31,7 +31,8 @@
             "tests/"
         ],
         "files": [
-            "tests/Rules/data/data.php"
+            "tests/Rules/data/data.php",
+            "tests/Rules/data/classdef.php"
         ]
     }
 }

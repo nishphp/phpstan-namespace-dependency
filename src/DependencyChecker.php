@@ -30,6 +30,7 @@ class DependencyChecker
     {
         foreach ($this->from as $toPrefix => $fromPrefixes){
             if (self::starts_with($to, $toPrefix)){
+                $fromPrefixes[] = $toPrefix;
                 foreach ($fromPrefixes as $fromPrefix){
                     if (self::starts_with($from, $fromPrefix)){
                         return true;
@@ -42,6 +43,7 @@ class DependencyChecker
 
         foreach ($this->to as $fromPrefix => $toPrefixes){
             if (self::starts_with($from, $fromPrefix)){
+                $toPrefixes[] = $fromPrefix;
                 foreach ($toPrefixes as $toPrefix){
                     if (self::starts_with($to, $toPrefix)){
                         return true;
