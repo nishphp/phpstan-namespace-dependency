@@ -6,8 +6,10 @@ namespace Nish\PHPStan\NsDepends;
 
 class DependencyChecker
 {
+
 	/** @var array<string, array<int,string>> $from */
 	private $from;
+
 	/** @var array<string, array<int,string>> $to */
 	private $to;
 
@@ -15,46 +17,47 @@ class DependencyChecker
 	 * @param array<string, array<int, string>> $from
 	 * @param array<string, array<int, string>> $to
 	 */
-    public function __construct(array $from, array $to)
-    {
-        $this->from = $from;
-        $this->to = $to;
-    }
+	public function __construct(array $from, array $to)
+	{
+		$this->from = $from;
+		$this->to = $to;
+	}
 
-    private static function starts_with(string $haystack, string $needle): bool
-    {
-        return strncmp($haystack, $needle, strlen($needle)) === 0;
-    }
+	private static function startsWith(string $haystack, string $needle): bool
+	{
+		return strncmp($haystack, $needle, strlen($needle)) === 0;
+	}
 
-    public function accept(string $from, string $to): bool
-    {
-        foreach ($this->from as $toPrefix => $fromPrefixes){
-            if (self::starts_with($to, $toPrefix)){
-                $fromPrefixes[] = $toPrefix;
-                foreach ($fromPrefixes as $fromPrefix){
-                    if (self::starts_with($from, $fromPrefix)){
-                        return true;
-                    }
-                }
+	public function accept(string $from, string $to): bool
+	{
+		foreach ($this->from as $toPrefix => $fromPrefixes) {
+			if (self::startsWith($to, $toPrefix)) {
+				$fromPrefixes[] = $toPrefix;
+				foreach ($fromPrefixes as $fromPrefix) {
+					if (self::startsWith($from, $fromPrefix)) {
+						return true;
+					}
+				}
 
-                return false;
-            }
-        }
+				return false;
+			}
+		}
 
-        foreach ($this->to as $fromPrefix => $toPrefixes){
-            if (self::starts_with($from, $fromPrefix)){
-                $toPrefixes[] = $fromPrefix;
-                foreach ($toPrefixes as $toPrefix){
-                    if (self::starts_with($to, $toPrefix)){
-                        return true;
-                    }
-                }
+		foreach ($this->to as $fromPrefix => $toPrefixes) {
+			if (self::startsWith($from, $fromPrefix)) {
+				$toPrefixes[] = $fromPrefix;
+				foreach ($toPrefixes as $toPrefix) {
+					if (self::startsWith($to, $toPrefix)) {
+						return true;
+					}
+				}
 
-                return false;
-            }
-        }
+				return false;
+			}
+		}
 
-        // not exists config, default is allow
-        return true;
-    }
+		// not exists config, default is allow
+		return true;
+	}
+
 }
