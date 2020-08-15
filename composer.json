@@ -31,7 +31,7 @@
             "tests/"
         ],
         "files": [
-            "tests/data.php"
+            "tests/Rules/data/data.php"
         ]
     }
 }

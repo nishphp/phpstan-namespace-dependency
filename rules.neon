@@ -1,0 +1,7 @@
+rules:
+  - Nish\PHPStan\NsDepends\Rules\MethodDefinitionRule
+  - Nish\PHPStan\NsDepends\Rules\PropertyRule
+  - Nish\PHPStan\NsDepends\Rules\StaticCallRule
+  - Nish\PHPStan\NsDepends\Rules\NewInstanceRule
+  - Nish\PHPStan\NsDepends\Rules\ClassConstFetchRule
+  - Nish\PHPStan\NsDepends\Rules\StaticPropertyFetchRule
