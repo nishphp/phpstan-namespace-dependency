@@ -154,7 +154,7 @@ class NamespaceDependencyRule implements Rule
                 return [];
 
             $class = $node->class;
-            if (!($class instanceof Node\Name))
+            if (!$class instanceof Node\Name)
                 return [];
 
             $className = (string) $class;
@@ -174,7 +174,7 @@ class NamespaceDependencyRule implements Rule
 
         }elseif ($node instanceof Expr\New_){
             $class = $node->class;
-            if (!($class instanceof Node\Name))
+            if (!$class instanceof Node\Name)
                 return [];
 
             $className = (string) $class;
@@ -190,6 +190,41 @@ class NamespaceDependencyRule implements Rule
                 ))->line($node->getLine())->build();
             }
 
+        }elseif ($node instanceof Expr\ClassConstFetch){
+            if (!$node->name instanceof Node\Identifier) {
+                return [];
+            }
+
+            if (!($node->class instanceof Node\Name))
+                return [];
+
+            $className = (string) $node->class;
+            if (!$this->accept($namespace, $className)) {
+                $errors[] = RuleErrorBuilder::message(sprintf(
+                    'Cannot allow depends %s to %s::%s.',
+                    $namespace,
+                    $className,
+                    $node->name->name
+                ))->line($node->getLine())->build();
+            }
+
+        }elseif ($node instanceof Expr\StaticPropertyFetch){
+            if (!$node->name instanceof Node\VarLikeIdentifier) {
+                return [];
+            }
+
+            if (!$node->class instanceof Node\Name)
+                return [];
+
+            $className = (string) $node->class;
+            if (!$this->accept($namespace, $className)) {
+                $errors[] = RuleErrorBuilder::message(sprintf(
+                    'Cannot allow depends %s to %s::$%s.',
+                    $namespace,
+                    $className,
+                    $node->name->name
+                ))->line($node->getLine())->build();
+            }
 
         }else{
             return [];
