@@ -36,7 +36,10 @@ class NamespaceDependencyRule implements Rule
 	 * @param array<int, array<int, string>> $from
 	 * @param array<int, array<int, string>> $to
 	 */
-	public function __construct(array $from, array $to, RuleLevelHelper $ruleLevelHelper)
+	public function __construct(
+        array $from, array $to
+        , RuleLevelHelper $ruleLevelHelper
+    )
 	{
         $this->from = $from;
         $this->to = $to;
@@ -142,6 +145,48 @@ class NamespaceDependencyRule implements Rule
                     $propertyReflection->getDeclaringClass()->getDisplayName(),
                     $node->name->name,
                     $referencedClass
+                ))->line($node->getLine())->build();
+            }
+
+
+        }elseif ($node instanceof Expr\StaticCall){
+            if (!$node->name instanceof Node\Identifier)
+                return [];
+
+            $class = $node->class;
+            if (!($class instanceof Node\Name))
+                return [];
+
+            $className = (string) $class;
+            $lowercasedClassName = strtolower($className);
+            if (in_array($lowercasedClassName, ['self', 'static', 'parent']))
+                return [];
+
+            if (!$this->accept($namespace, $className)) {
+                $methodName = $node->name->name;
+                $errors[] = RuleErrorBuilder::message(sprintf(
+                    'Cannot allow depends %s to %s::%s().',
+                    $namespace,
+                    $className,
+                    $methodName
+                ))->line($node->getLine())->build();
+            }
+
+        }elseif ($node instanceof Expr\New_){
+            $class = $node->class;
+            if (!($class instanceof Node\Name))
+                return [];
+
+            $className = (string) $class;
+            $lowercasedClassName = strtolower($className);
+            if (in_array($lowercasedClassName, ['self', 'static', 'parent']))
+                return [];
+
+            if (!$this->accept($namespace, $className)) {
+                $errors[] = RuleErrorBuilder::message(sprintf(
+                    'Cannot allow depends %s to %s::__construct().',
+                    $namespace,
+                    $className
                 ))->line($node->getLine())->build();
             }
 

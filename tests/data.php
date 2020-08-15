@@ -6,6 +6,9 @@ namespace Http {
 
 
 namespace Model {
+    use Util\Util;
+    use Presenter\Form;
+
     class IndexModel {
         /** @var \stdClass */
         private $obj;
@@ -21,17 +24,27 @@ namespace Model {
 
         public function h(string $s): string
         {
-            return \Util\Util::h($s);
+            return Util::h($s);
         }
 
         public function otherNs1(): void
         {
-            $a = new \Presenter\Form();
+            $a = new Form();
         }
 
         public function otherNs2(): void
         {
-            $a = Presenter\Form::build();
+            $a = Form::build();
+        }
+
+        public function otherNs3(): void
+        {
+            $a = Form::$a;
+        }
+
+        public function otherNs4(): void
+        {
+            $a = Form::B;
         }
     }
 }
@@ -57,10 +70,12 @@ namespace View {
 }
 
 namespace Util {
+    use Model\IndexModel;
+
     class ModelUtil {
-        public static function getModel(): \Model\IndexModel
+        public static function getModel(): IndexModel
         {
-            return new \Model\IndexModel;
+            return new IndexModel;
         }
     }
 
@@ -81,6 +96,8 @@ namespace Util {
 
 namespace Presenter {
     class Form {
+        public static $a;
+        const B = 'b';
         public static function build(): self
         {
             return new self;

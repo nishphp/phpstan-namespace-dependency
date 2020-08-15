@@ -32,31 +32,51 @@ class NamespaceDependencyRuleTest extends RuleTestCase
         $this->analyse([__DIR__ . '/data.php'], [
             [
                 'Cannot allow depends in Model\IndexModel::$obj(stdClass).',
-                11
+                14
             ],
             [
                 'Cannot allow depends in Model\IndexModel::setObj() parameter $obj(stdClass).',
-                13
+                16
             ],
             [
                 'Cannot allow depends in Model\IndexModel::getObj() return type stdClass.',
-                17
+                20
             ],
             [
-                'Cannot allow depends in Model\IndexModel to Presenter\Form.',
-                29
+                'Cannot allow depends Model to stdClass::__construct().',
+                22
             ],
             [
-                'Cannot allow depends in Model\IndexModel to Presenter\Form.',
-                34
+                'Cannot allow depends Model to Presenter\Form::__construct().',
+                32
+            ],
+            [
+                'Cannot allow depends Model to Presenter\Form::build().',
+                37
+            ],
+            [
+                'Cannot allow depends Model to Presenter\Form::$a.',
+                42
+            ],
+            [
+                'Cannot allow depends Model to Presenter\Form::B.',
+                47
             ],
             [
                 'Cannot allow depends in Util\ModelUtil::getModel() return type Model\IndexModel.',
-                61
+                76
+            ],
+            [
+                'Cannot allow depends Util to Model\IndexModel::__construct().',
+                78
             ],
             [
                 'Cannot allow depends in Util\Container::getView() return type View\IndexView.',
-                75
+                90
+            ],
+            [
+                'Cannot allow depends Util to View\IndexView::__construct().',
+                92
             ],
         ]);
     }
