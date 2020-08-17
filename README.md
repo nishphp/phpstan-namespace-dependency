@@ -92,7 +92,7 @@ services:
 
 ### Friend, Package Private
 
-```
+```yaml
 includes:
   - vendor/nish/phpstan-namespace-dependency/rules.neon
 
