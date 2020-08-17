@@ -88,3 +88,23 @@ services:
     ])
 ```
 
+
+
+### Friend, Package Private
+
+```
+includes:
+  - vendor/nish/phpstan-namespace-dependency/rules.neon
+
+services:
+  -
+    factory: Nish\PHPStan\NsDepends\DependencyChecker([
+      'App\Model\MyModel\InternalClassImpl': ['App\Model\MyModel\InternalClassFactory'],
+      'App\Model': ['App\Controller'],
+      'App\View': ['App\Controller'],
+    ], [])
+```
+
+The settings are searched in order from the top, and when the key is hit, the search is stopped there.
+
+`App\Model\MyModel\InternalClassImpl` allows dependencies from `App\Model\MyModel\InternalClassFactory`, not from `App\Controller`.
