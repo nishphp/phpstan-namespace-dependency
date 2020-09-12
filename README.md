@@ -88,7 +88,7 @@ services:
     ])
 ```
 
-
+see https://github.com/nishimura/phpstan-namespace-dependency-sample
 
 ### Friend, Package Private
 
