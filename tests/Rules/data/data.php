@@ -104,3 +104,15 @@ namespace Presenter {
         }
     }
 }
+
+namespace Model
+{
+    class SelfModel {
+        const DATA1 = 1;
+
+        public function getData1(): int
+        {
+            return self::DATA1;
+        }
+    }
+}

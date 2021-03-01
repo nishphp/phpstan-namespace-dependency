@@ -58,6 +58,11 @@ class ClassConstFetchRule implements Rule
 		}
 
 		$className = (string) $node->class;
+
+		if ($className === 'self' || $className === 'static') {
+			return [];
+		}
+
 		if (!$this->checker->accept($sourceClassName, $className)) {
 			$errors[] = RuleErrorBuilder::message(sprintf(
 				'Cannot allow depends %s to %s::%s.',
