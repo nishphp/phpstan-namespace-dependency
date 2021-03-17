@@ -58,6 +58,11 @@ class StaticPropertyFetchRule implements Rule
 		}
 
 		$className = (string) $node->class;
+		$lowercasedClassName = strtolower($className);
+		if (in_array($lowercasedClassName, ['self', 'static', 'parent'])) {
+			return [];
+		}
+
 		if (!$this->checker->accept($sourceClassName, $className)) {
 			$errors[] = RuleErrorBuilder::message(sprintf(
 				'Cannot allow depends %s to %s::$%s.',
