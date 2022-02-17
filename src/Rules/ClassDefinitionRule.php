@@ -37,11 +37,11 @@ class ClassDefinitionRule implements Rule
 			return [];
 		}
 
-		if (!isset($node->namespacedName)) {
+		$className = (string) $node->namespacedName;
+
+		if ($node->namespacedName == '') {
 			return [];
 		}
-
-		$className = (string) $node->namespacedName;
 
 		$errors = [];
 
