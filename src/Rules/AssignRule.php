@@ -45,9 +45,6 @@ class AssignRule implements Rule
 		}
 
         $sourceClassReflection = $scope->getClassReflection();
-        if (!$sourceClassReflection) {
-            return [];
-        }
         $sourceClassName = $sourceClassReflection->getName();
 
 		$errors = [];

@@ -9,7 +9,7 @@ use PhpParser\Node;
 use PHPStan\Analyser\Scope;
 use PHPStan\Reflection\ParametersAcceptor;
 use PHPStan\Reflection\ParametersAcceptorSelector;
-use PHPStan\Reflection\ParametersAcceptorWithPhpDocs;
+use PHPStan\Reflection\ExtendedParametersAcceptor;
 use PHPStan\Rules\Rule;
 use PHPStan\Rules\RuleErrorBuilder;
 use PHPStan\ShouldNotHappenException;
@@ -58,19 +58,12 @@ class MethodDefinitionRule implements Rule
 	/** @return array<string|\PHPStan\Rules\RuleError> errors */
 	public function processNode(Node $node, Scope $scope): array
 	{
-		if (!$node instanceof \PHPStan\Node\InClassMethodNode) {
-			return [];
-		}
-
 		if (!$scope->isInClass()) {
 			return [];
 		}
 
-        $sourceClassReflection = $scope->getClassReflection();
-        if (!$sourceClassReflection) {
-            return [];
-        }
-        $sourceClassName = $sourceClassReflection->getName();
+		$sourceClassReflection = $scope->getClassReflection();
+		$sourceClassName = $sourceClassReflection->getName();
 
 		$errors = [];
 
@@ -99,14 +92,10 @@ class MethodDefinitionRule implements Rule
 			}
 		}
 
-		if (!$parametersAcceptor instanceof ParametersAcceptorWithPhpDocs) {
-			$referencedClasses = $parametersAcceptor->getReturnType()->getReferencedClasses();
-		} else {
-			$referencedClasses = array_merge(
-				$parametersAcceptor->getNativeReturnType()->getReferencedClasses(),
-				$parametersAcceptor->getPhpDocReturnType()->getReferencedClasses()
-			);
-		}
+		$referencedClasses = array_merge(
+			$parametersAcceptor->getNativeReturnType()->getReferencedClasses(),
+			$parametersAcceptor->getPhpDocReturnType()->getReferencedClasses()
+		);
 		foreach ($referencedClasses as $referencedClass) {
 			if ($this->checker->accept($sourceClassName, $referencedClass)) {
 				continue;
