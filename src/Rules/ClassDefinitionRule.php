@@ -33,10 +33,6 @@ class ClassDefinitionRule implements Rule
 	/** @return array<string|\PHPStan\Rules\RuleError> errors */
 	public function processNode(Node $node, Scope $scope): array
 	{
-		if (!$node instanceof Stmt\Class_) {
-			return [];
-		}
-
 		$className = (string) $node->namespacedName;
 
 		if ($node->namespacedName == '') {

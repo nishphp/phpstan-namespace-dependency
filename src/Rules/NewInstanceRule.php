@@ -33,18 +33,11 @@ class NewInstanceRule implements Rule
 	/** @return array<string|\PHPStan\Rules\RuleError> errors */
 	public function processNode(Node $node, Scope $scope): array
 	{
-		if (!$node instanceof Expr\New_) {
-			return [];
-		}
-
 		if (!$scope->isInClass()) {
 			return [];
 		}
 
         $sourceClassReflection = $scope->getClassReflection();
-        if (!$sourceClassReflection) {
-            return [];
-        }
         $sourceClassName = $sourceClassReflection->getName();
 
 		$errors = [];
