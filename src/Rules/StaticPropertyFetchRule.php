@@ -17,8 +17,7 @@ use PHPStan\Rules\RuleErrorBuilder;
 class StaticPropertyFetchRule implements Rule
 {
 
-	/** @var DependencyChecker */
-	private $checker;
+	private DependencyChecker $checker;
 
 	public function __construct(DependencyChecker $checker)
 	{
@@ -37,8 +36,8 @@ class StaticPropertyFetchRule implements Rule
 			return [];
 		}
 
-        $sourceClassReflection = $scope->getClassReflection();
-        $sourceClassName = $sourceClassReflection->getName();
+		$sourceClassReflection = $scope->getClassReflection();
+		$sourceClassName = $sourceClassReflection->getName();
 
 		$errors = [];
 

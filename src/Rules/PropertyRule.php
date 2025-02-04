@@ -16,8 +16,7 @@ use PHPStan\Rules\RuleErrorBuilder;
 class PropertyRule implements Rule
 {
 
-	/** @var DependencyChecker */
-	private $checker;
+	private DependencyChecker $checker;
 
 	public function __construct(DependencyChecker $checker)
 	{
@@ -36,8 +35,8 @@ class PropertyRule implements Rule
 			return [];
 		}
 
-        $sourceClassReflection = $scope->getClassReflection();
-        $sourceClassName = $sourceClassReflection->getName();
+		$sourceClassReflection = $scope->getClassReflection();
+		$sourceClassName = $sourceClassReflection->getName();
 
 		$errors = [];
 

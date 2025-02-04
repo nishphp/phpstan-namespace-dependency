@@ -11,6 +11,7 @@
         "nikic/php-parser": "*",
         "nette/di": "^3.0",
         "squizlabs/php_codesniffer": "*",
+        "consistence-community/coding-standard": "3.11.3",
         "dealerdirect/phpcodesniffer-composer-installer": "*"
     },
     "license": "MIT",

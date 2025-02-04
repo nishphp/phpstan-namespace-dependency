@@ -8,11 +8,8 @@ use Nish\PHPStan\NsDepends\DependencyChecker;
 use PhpParser\Node;
 use PHPStan\Analyser\Scope;
 use PHPStan\Reflection\ParametersAcceptor;
-use PHPStan\Reflection\ParametersAcceptorSelector;
-use PHPStan\Reflection\ExtendedParametersAcceptor;
 use PHPStan\Rules\Rule;
 use PHPStan\Rules\RuleErrorBuilder;
-use PHPStan\ShouldNotHappenException;
 
 /**
  * @implements Rule<\PHPStan\Node\InClassMethodNode>
@@ -20,8 +17,7 @@ use PHPStan\ShouldNotHappenException;
 class MethodDefinitionRule implements Rule
 {
 
-	/** @var DependencyChecker */
-	private $checker;
+	private DependencyChecker $checker;
 
 	public function __construct(DependencyChecker $checker)
 	{
@@ -44,12 +40,12 @@ class MethodDefinitionRule implements Rule
 	{
 		$count = count($parametersAcceptors);
 		if ($count === 0) {
-			throw new ShouldNotHappenException(
+			throw new \PHPStan\ShouldNotHappenException(
 				'getVariants() must return at least one variant.',
 			);
 		}
 		if ($count !== 1) {
-			throw new ShouldNotHappenException('Multiple variants - use selectFromArgs() instead.');
+			throw new \PHPStan\ShouldNotHappenException('Multiple variants - use selectFromArgs() instead.');
 		}
 
 		return $parametersAcceptors[0];

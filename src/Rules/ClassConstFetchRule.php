@@ -17,8 +17,7 @@ use PHPStan\Rules\RuleErrorBuilder;
 class ClassConstFetchRule implements Rule
 {
 
-	/** @var DependencyChecker */
-	private $checker;
+	private DependencyChecker $checker;
 
 	public function __construct(DependencyChecker $checker)
 	{
@@ -37,8 +36,8 @@ class ClassConstFetchRule implements Rule
 			return [];
 		}
 
-        $sourceClassReflection = $scope->getClassReflection();
-        $sourceClassName = $sourceClassReflection->getName();
+		$sourceClassReflection = $scope->getClassReflection();
+		$sourceClassName = $sourceClassReflection->getName();
 
 		$errors = [];
 

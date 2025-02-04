@@ -8,10 +8,10 @@ class DependencyChecker
 {
 
 	/** @var array<string, array<int,string>> $from */
-	private $from;
+	private array $from;
 
 	/** @var array<string, array<int,string>> $to */
-	private $to;
+	private array $to;
 
 	/**
 	 * @param array<string, array<int, string>> $from
