@@ -6,19 +6,17 @@ namespace Nish\PHPStan\NsDepends\Rules;
 
 use Nish\PHPStan\NsDepends\DependencyChecker;
 use PhpParser\Node;
-use PhpParser\Node\Stmt;
 use PHPStan\Analyser\Scope;
 use PHPStan\Rules\Rule;
 use PHPStan\Rules\RuleErrorBuilder;
 
 /**
- * @implements Rule<Stmt\PropertyProperty>
+ * @implements Rule<Node\PropertyItem>
  */
 class PropertyRule implements Rule
 {
 
-	/** @var DependencyChecker */
-	private $checker;
+	private DependencyChecker $checker;
 
 	public function __construct(DependencyChecker $checker)
 	{
@@ -27,33 +25,22 @@ class PropertyRule implements Rule
 
 	public function getNodeType(): string
 	{
-		return Stmt\PropertyProperty::class;
+		return Node\PropertyItem::class;
 	}
 
 	/** @return array<string|\PHPStan\Rules\RuleError> errors */
 	public function processNode(Node $node, Scope $scope): array
 	{
-		if (!$node instanceof Stmt\PropertyProperty) {
-			return [];
-		}
-
 		if (!$scope->isInClass()) {
 			return [];
 		}
 
-        $sourceClassReflection = $scope->getClassReflection();
-        if (!$sourceClassReflection) {
-            return [];
-        }
-        $sourceClassName = $sourceClassReflection->getName();
+		$sourceClassReflection = $scope->getClassReflection();
+		$sourceClassName = $sourceClassReflection->getName();
 
 		$errors = [];
 
 		$classReflection = $scope->getClassReflection();
-		if (!$classReflection) {
-			return [];
-		}
-
 		$propertyReflection = $classReflection->getNativeProperty($node->name->name);
 
 		$referencedClasses = array_merge(

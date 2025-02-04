@@ -17,8 +17,7 @@ use PHPStan\Rules\RuleErrorBuilder;
 class ClassDefinitionRule implements Rule
 {
 
-	/** @var DependencyChecker */
-	private $checker;
+	private DependencyChecker $checker;
 
 	public function __construct(DependencyChecker $checker)
 	{
@@ -33,10 +32,6 @@ class ClassDefinitionRule implements Rule
 	/** @return array<string|\PHPStan\Rules\RuleError> errors */
 	public function processNode(Node $node, Scope $scope): array
 	{
-		if (!$node instanceof Stmt\Class_) {
-			return [];
-		}
-
 		$className = (string) $node->namespacedName;
 
 		if ($node->namespacedName == '') {

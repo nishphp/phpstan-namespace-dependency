@@ -17,8 +17,7 @@ use PHPStan\Rules\RuleErrorBuilder;
 class StaticCallRule implements Rule
 {
 
-	/** @var DependencyChecker */
-	private $checker;
+	private DependencyChecker $checker;
 
 	public function __construct(DependencyChecker $checker)
 	{
@@ -33,19 +32,12 @@ class StaticCallRule implements Rule
 	/** @return array<string|\PHPStan\Rules\RuleError> errors */
 	public function processNode(Node $node, Scope $scope): array
 	{
-		if (!$node instanceof Expr\StaticCall) {
-			return [];
-		}
-
 		if (!$scope->isInClass()) {
 			return [];
 		}
 
-        $sourceClassReflection = $scope->getClassReflection();
-        if (!$sourceClassReflection) {
-            return [];
-        }
-        $sourceClassName = $sourceClassReflection->getName();
+		$sourceClassReflection = $scope->getClassReflection();
+		$sourceClassName = $sourceClassReflection->getName();
 
 		$errors = [];
 

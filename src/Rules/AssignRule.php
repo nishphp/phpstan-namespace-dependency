@@ -17,8 +17,7 @@ use PHPStan\Rules\RuleErrorBuilder;
 class AssignRule implements Rule
 {
 
-	/** @var DependencyChecker */
-	private $checker;
+	private DependencyChecker $checker;
 
 	public function __construct(DependencyChecker $checker)
 	{
@@ -44,11 +43,8 @@ class AssignRule implements Rule
 			return [];
 		}
 
-        $sourceClassReflection = $scope->getClassReflection();
-        if (!$sourceClassReflection) {
-            return [];
-        }
-        $sourceClassName = $sourceClassReflection->getName();
+		$sourceClassReflection = $scope->getClassReflection();
+		$sourceClassName = $sourceClassReflection->getName();
 
 		$errors = [];
 
@@ -58,18 +54,18 @@ class AssignRule implements Rule
 			$assignedValueType = $scope->getType($node);
 		}
 
-        $referencedClasses = $assignedValueType->getReferencedClasses();
-        foreach ($referencedClasses as $referencedClass) {
-            if ($this->checker->accept($sourceClassName, $referencedClass)) {
-                continue;
-            }
+		$referencedClasses = $assignedValueType->getReferencedClasses();
+		foreach ($referencedClasses as $referencedClass) {
+			if ($this->checker->accept($sourceClassName, $referencedClass)) {
+				continue;
+			}
 
-            $errors[] = RuleErrorBuilder::message(sprintf(
-                'Cannot allow depends %s to %s.',
-                $sourceClassName,
-                $referencedClass
-            ))->line($node->getLine())->build();
-        }
+			$errors[] = RuleErrorBuilder::message(sprintf(
+				'Cannot allow depends %s to %s.',
+				$sourceClassName,
+				$referencedClass
+			))->line($node->getLine())->build();
+		}
 
 		return $errors;
 	}

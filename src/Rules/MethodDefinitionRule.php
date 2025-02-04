@@ -7,8 +7,7 @@ namespace Nish\PHPStan\NsDepends\Rules;
 use Nish\PHPStan\NsDepends\DependencyChecker;
 use PhpParser\Node;
 use PHPStan\Analyser\Scope;
-use PHPStan\Reflection\ParametersAcceptorSelector;
-use PHPStan\Reflection\ParametersAcceptorWithPhpDocs;
+use PHPStan\Reflection\ParametersAcceptor;
 use PHPStan\Rules\Rule;
 use PHPStan\Rules\RuleErrorBuilder;
 
@@ -18,8 +17,7 @@ use PHPStan\Rules\RuleErrorBuilder;
 class MethodDefinitionRule implements Rule
 {
 
-	/** @var DependencyChecker */
-	private $checker;
+	private DependencyChecker $checker;
 
 	public function __construct(DependencyChecker $checker)
 	{
@@ -31,22 +29,37 @@ class MethodDefinitionRule implements Rule
 		return \PHPStan\Node\InClassMethodNode::class;
 	}
 
+	/**
+	 * @template T of ParametersAcceptor
+	 * @param T[] $parametersAcceptors
+	 * @return T
+	 */
+	public static function selectSingle(
+		array $parametersAcceptors,
+	): ParametersAcceptor
+	{
+		$count = count($parametersAcceptors);
+		if ($count === 0) {
+			throw new \PHPStan\ShouldNotHappenException(
+				'getVariants() must return at least one variant.',
+			);
+		}
+		if ($count !== 1) {
+			throw new \PHPStan\ShouldNotHappenException('Multiple variants - use selectFromArgs() instead.');
+		}
+
+		return $parametersAcceptors[0];
+	}
+
 	/** @return array<string|\PHPStan\Rules\RuleError> errors */
 	public function processNode(Node $node, Scope $scope): array
 	{
-		if (!$node instanceof \PHPStan\Node\InClassMethodNode) {
-			return [];
-		}
-
 		if (!$scope->isInClass()) {
 			return [];
 		}
 
-        $sourceClassReflection = $scope->getClassReflection();
-        if (!$sourceClassReflection) {
-            return [];
-        }
-        $sourceClassName = $sourceClassReflection->getName();
+		$sourceClassReflection = $scope->getClassReflection();
+		$sourceClassName = $sourceClassReflection->getName();
 
 		$errors = [];
 
@@ -55,7 +68,7 @@ class MethodDefinitionRule implements Rule
 			return [];
 		}
 
-		$parametersAcceptor = ParametersAcceptorSelector::selectSingle($methodReflection->getVariants());
+		$parametersAcceptor = self::selectSingle($methodReflection->getVariants());
 		foreach ($parametersAcceptor->getParameters() as $parameterReflection) {
 			$type = $parameterReflection->getType();
 
@@ -75,14 +88,10 @@ class MethodDefinitionRule implements Rule
 			}
 		}
 
-		if (!$parametersAcceptor instanceof ParametersAcceptorWithPhpDocs) {
-			$referencedClasses = $parametersAcceptor->getReturnType()->getReferencedClasses();
-		} else {
-			$referencedClasses = array_merge(
-				$parametersAcceptor->getNativeReturnType()->getReferencedClasses(),
-				$parametersAcceptor->getPhpDocReturnType()->getReferencedClasses()
-			);
-		}
+		$referencedClasses = array_merge(
+			$parametersAcceptor->getNativeReturnType()->getReferencedClasses(),
+			$parametersAcceptor->getPhpDocReturnType()->getReferencedClasses()
+		);
 		foreach ($referencedClasses as $referencedClass) {
 			if ($this->checker->accept($sourceClassName, $referencedClass)) {
 				continue;
